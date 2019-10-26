@@ -1,14 +1,12 @@
 Modules =
-    configmodule: require "./configmodule.js"
-    createprocessmodule: require "./createprocessmodule.js"
-    debugmodule: require "./debugmodule.js"
-    githubhandlermodule: require "./githubhandlermodule.js"
-    githubremotehandlermodule: require "./githubremotehandlermodule.js"
-    pathhandlermodule: require "./pathhandlermodule.js"
-    startupmodule: require "./startupmodule.js"
-    repositorytreehandlermodule: require "./repositorytreehandlermodule.js"
-    thingyinquirermodule: require "./thingyinquirermodule.js"
-    thingymodule: require "./thingymodule.js"
-    utilmodule: require "./utilmodule.js"
+    cliargumentsmodule: require "./cliargumentsmodule"
+    configmodule: require "./configmodule"
+    debugmodule: require "./debugmodule"
+    generateprocessmodule: require "./generateprocessmodule"
+    hookupmodule: require "./hookupmodule"
+    modulegenmodule: require "./modulegenmodule"
+    pathhandlermodule: require "./pathhandlermodule"
+    startupmodule: require "./startupmodule"
+    userinquirymodule: require "./userinquirymodule"
 
 module.exports = Modules

@@ -1,8 +1,6 @@
 pathhandlermodule = {name: "pathhandlermodule"}
 
 #region node_modules
-inquirer    = require("inquirer")
-git         = require("simple-git") 
 c           = require('chalk');
 CLI         = require('clui');
 Spinner     = CLI.Spinner;
@@ -16,20 +14,17 @@ log = (arg) ->
     return
 
 #region internal variables
-utl = null
-thingyName = ""
 #endregion
 
 #region exposed variables
-pathhandlermodule.basePath = ""
+pathhandlermodule.sourcePath = ""
+pathhandlermodule.modulePath = ""
 pathhandlermodule.thingyPath = ""
 #endregion
-
 
 ##initialization function  -> is automatically being called!  ONLY RELY ON DOM AND VARIABLES!! NO PLUGINS NO OHTER INITIALIZATIONS!!
 pathhandlermodule.initialize = () ->
     log "pathhandlermodule.initialize"
-    utl = allModules.utilmodule
 
 #region internal functions
 checkDirectoryExists = (path) ->
@@ -40,82 +35,55 @@ checkDirectoryExists = (path) ->
         # console.log(c.red(err.message))
         return false
 
-checkDirectoryIsInGit = (path) ->
-    try
-        await utl.execGitCheckPromise(path)
-        return true
-    catch err
-        # console.log(c.red(err.message))
-        return false
+
+findSourcePath = ->
+    log "findSourcePath"
+
+    sourcePath = pathModule.resolve(pathhandlermodule.thingyPath, "sources/source")
+    exists = await checkDirectoryExists(sourcePath)
+    if !exists
+        throw new Error("sourcePath: " + sourcePath + " did not exist! The provided path might not be the thingy root.")
+    pathhandlermodule.sourcePath = sourcePath
+
+findModulePath = (name) ->
+    log "findModulePath"
+    modulePath = pathModule.resolve(pathhandlermodule.sourcePath, name)
+    exists = await checkDirectoryExists(modulePath)
+    if exists
+        throw new Error("modulePath: " + modulePath + " did already exist! So the module already exists...")
+    pathhandlermodule.modulePath = modulePath
+
+checkProvidedPath = (providedPath) ->
+    log "checkProvidedPath"
+
+    if providedPath
+        if !pathModule.isAbsolute(providedPath)
+            providedPath = pathModule.resolve(process.cwd(), providedPath)
+    else
+        providedPath = process.cwd()
+
+    exists = await checkDirectoryExists(providedPath)
+    if !exists
+        throw new Error("Provided path:'" + providedPath + "' does not exist!")
+    
+    pathhandlermodule.thingyPath = providedPath
+
 #endregion
 
 #region exposed functions
-pathhandlermodule.tryUse = (providedPath) ->
-    if providedPath
-        if pathModule.isAbsolute(providedPath)
-            pathhandlermodule.basePath = providedPath
-        else
-            pathhandlermodule.basePath = pathModule.resolve(process.cwd(), providedPath)
-    else
-        pathhandlermodule.basePath = process.cwd()
+pathhandlermodule.checkPaths = (name, providedPath) ->
+    log "pathhandlermodule.checkPaths"
 
-    exists = await checkDirectoryExists(pathhandlermodule.basePath)
+    log "checking for providedPath: " + providedPath
+    await checkProvidedPath(providedPath)
+    log "resulting thingy path is: " + pathhandlermodule.thingyPath
+    
+    await findSourcePath()
+    await findModulePath(name)
 
-    if !exists
-        throw new Error("Provided directory does not exist!")
+pathhandlermodule.getModulePath = -> pathhandlermodule.modulePath
 
-    isInGit = await checkDirectoryIsInGit(pathhandlermodule.basePath)
-    if isInGit
-        throw new Error("Provided directory is already in a git subtree!")
-
-pathhandlermodule.checkCreatability = (directoryName) ->
-    directoryPath = pathModule.resolve(pathhandlermodule.basePath, directoryName)
-    exists = await checkDirectoryExists(directoryPath)
-    if exists
-        throw "The directory at " + directoryPath + " already exists!"
-
-pathhandlermodule.createInitializationBase = (name) ->
-    thingyName = name
-    pathhandlermodule.thingyPath = pathModule.resolve(pathhandlermodule.basePath, thingyName)
-    pathhandlermodule.basePath = pathModule.resolve(pathhandlermodule.basePath, name + "-init")
-    await fs.mkdirs(pathhandlermodule.basePath)
-
-pathhandlermodule.cleanInitializationBase = () ->
-    initializedThingyPath = pathModule.resolve(pathhandlermodule.basePath, thingyName)
-    await fs.move(initializedThingyPath, pathhandlermodule.thingyPath)
-    await fs.remove(pathhandlermodule.basePath)
-    pathhandlermodule.basePath = pathModule.resolve(pathhandlermodule.basePath, "..")
-
-pathhandlermodule.getBasePath = () ->
-    return pathhandlermodule.basePath
-
-pathhandlermodule.getGitPaths = (name) ->
-    r = {}
-    r.repoDir = pathModule.resolve(pathhandlermodule.basePath, name)
-    r.gitDir = pathModule.resolve(r.repoDir, ".git")
-    return r
-
-pathhandlermodule.getLicenseSourcePaths = () ->
-    r =  {}
-    r.licensePath = pathModule.resolve(__dirname, "../LICENSE")
-    r.unlicensePath = pathModule.resolve(__dirname, "../UNLICENSE")
-    return r
-
-pathhandlermodule.getLicenseDestinationPaths = (repoDir) ->
-    r =  {}
-    r.licensePath = pathModule.resolve(repoDir, "LICENSE")
-    r.unlicensePath = pathModule.resolve(repoDir, "UNLICENSE")
-    return r
-
-pathhandlermodule.setThingyPath = (path) ->
-    pathhandlermodule.thingyPath = path
-
-pathhandlermodule.getToolsetPath = ()  ->
-    return pathModule.resolve(pathhandlermodule.thingyPath, "toolset")
-
-pathhandlermodule.getPreparationScriptPath = (scriptFileName) ->
-    return pathModule.resolve(pathhandlermodule.thingyPath, "toolset", scriptFileName)
-
+pathhandlermodule.getSourcePath = -> pathhandlermodule.sourcePath
 #endregion
 
 module.exports = pathhandlermodule

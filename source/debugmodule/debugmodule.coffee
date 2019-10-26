@@ -2,20 +2,20 @@ debugmodule = {name: "debugmodule"}
 
 ##initialization function  -> is automatically being called!  ONLY RELY ON DOM AND VARIABLES!! NO PLUGINS NO OHTER INITIALIZATIONS!!
 debugmodule.initialize = () ->
-    console.log "debugmodule.initialize - nothing to do"
+    # console.log "debugmodule.initialize - nothing to do"
+    return
 
 debugmodule.modulesToDebug = 
     unbreaker: true
-    createprocessmodule: true
-    githubhandlermodule: true
-    githubremotehandlermodule: true
-    pathhandlermodule: true
-    configmodule: true
-    startupmodule: true
-    repositorytreehandlermodule: true
-    thingyinquirermodule: true
-    thingymodule: true
-    utilmodule: true
+    # cliargumentsmodule: true
+    # configmodule: true
+    # generateprocessmodule: true
+    hookupmodule: true
+    # modulegenmodule: true
+    # pathhandlermodule: true
+    # startupmodule: true
+    # userinquirymodule: true
+    # utilmodule: true
 
 #region exposed variables
 
