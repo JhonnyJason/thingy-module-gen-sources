@@ -12,14 +12,12 @@ log = (arg) ->
     return
 
 #region internal variables
-hooker = null
 pathHandler = null
 #endregion
 
 ##initialization function  -> is automatically being called!  ONLY RELY ON DOM AND VARIABLES!! NO PLUGINS NO OHTER INITIALIZATIONS!!
 modulegenmodule.initialize = () ->
     log "modulegenmodule.initialize"
-    hooker = allModules.hookupmodule
     pathHandler = allModules.pathhandlermodule
     return
 
@@ -41,7 +39,6 @@ class CoffeeGenTask extends Task
         
         # log "\n - - - \nfileContent:\n" + fileContent
         await fs.writeFile(filePath, fileContent)
-        await hooker.hookUpTheCoffee(@moduleName)
 
 class PugGenTask extends Task
     templatePath = pathModule.resolve( __dirname, "file-templates/template.pug")
@@ -74,7 +71,6 @@ class StyleGenTask extends Task
 
         # log "\n - - - \nfileContent:\n" + fileContent
         await fs.writeFile(filePath, fileContent)
-        await hooker.hookUpTheStyle(pugname)
 
 #endregion
 
@@ -110,8 +106,7 @@ modulegenmodule.generate = (files, name) ->
     log "modulegenmodule.generate"
     tasks = generateTasks(files, name)
 
-    await generateModuleDirectory()
-    
+    await generateModuleDirectory()    
     promises = (task.do() for task in tasks)
     await Promise.all(promises)
     

@@ -10,7 +10,6 @@ debugmodule.modulesToDebug =
     # cliargumentsmodule: true
     # configmodule: true
     # generateprocessmodule: true
-    hookupmodule: true
     # modulegenmodule: true
     # pathhandlermodule: true
     # startupmodule: true
