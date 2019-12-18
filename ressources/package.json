@@ -1,6 +1,6 @@
 {
   "name": "thingy-module-gen",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Small cli to reduce overhead of createing a new thingy-module",
   "main": "index.js",
   "scripts": {

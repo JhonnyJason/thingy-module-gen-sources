@@ -1,22 +1,24 @@
 {{moduleName}} = {name: "{{moduleName}}"}
 
-#region node_modules
+#region modulesFromTheEnvironment
 #endregion
 
+#region printLogFunctions
 ##############################################################################
 log = (arg) ->
     if allModules.debugmodule.modulesToDebug["{{moduleName}}"]?  then console.log "[{{moduleName}}]: " + arg
     return
-
+print = (arg) -> console.log(arg)
+#endregion
 ##############################################################################
 {{moduleName}}.initialize = () ->
     log "{{moduleName}}.initialize"
     return
     
-#region internal functions
+#region internalFunctions
 #endregion
 
-#region exposed functions
+#region exposedFunctions
 #endregion
 
 module.exports = {{moduleName}}
