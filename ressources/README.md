@@ -1,9 +1,11 @@
 # thingy-module-gen - commandline wizard to easify the generation of a thingy module
 
 # Why?
-The process of copying and refactoring an existing module is too tedious. Also we can add further more complex functionality here later - module being git submodule and more.
-
+The process of copying and refactoring an existing module is too tedious. 
 Usually this tool is used from a a thingy toolset.
+While for more sophisticated usage the tool [thingymodulecreate](https://www.npmjs.com/package/thingymodulecreate) will be used. 
+
+The advantage of this tool is that it just instantly creates the directory and the files for the module in the most basic form.
 
 # How?
 Installation
@@ -52,8 +54,6 @@ $ thingy-module-gen newcomponentmodule
 # Further steps
 This tool will be adjusted to prepare a module to all its behaviours.
 
-- module being it's own git submodule for code sharing
-- introduce possibility to package module as node_module (add module as thingy-module when we continue to develop on it - add module as node_module when only using the module)
 - ...
 
 All sorts of inputs are welcome, thanks!
@@ -68,9 +68,9 @@ All sorts of inputs are welcome, thanks!
 - Information only has memory to reside in and relations to be meaningful.
 - Information cannot be stolen. Only shared or destroyed.
 
-And you whish it has been shared before it is destroyed.
+And you wish it has been shared before it is destroyed.
 
-The one claiming copyright or intellectual property either is really evil or probably has some insecurity issues which makes him blind to the fact that he also just connected information which was free available to him.
+The one claiming copyright or intellectual property either is really evil or probably has some insecurity issues which makes him blind to the fact that he also just connected information which was freely available to him.
 
 The value is not in him who "created" the information the value is what is being done with the information.
 So the restriction and friction of the informations' usage is exclusively reducing value overall.

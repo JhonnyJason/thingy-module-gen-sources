@@ -36,8 +36,9 @@ startupmodule.cliStartup = ->
         if done then successLog 'All done!'
     catch err
         errLog 'Error!'
-        console.log err
-        console.log "\n"
+        if err instanceof Error then console.log(err.message)
+        else console.log(err)
+        console.log("\n")
 
 #endregion exposed functions
 
