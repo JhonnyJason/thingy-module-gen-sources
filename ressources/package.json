@@ -1,6 +1,6 @@
 {
   "name": "thingy-module-gen",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Small cli to reduce overhead of createing a new thingy-module",
   "main": "index.js",
   "scripts": {
@@ -20,9 +20,9 @@
   },
   "dependencies": {
     "clui": "^0.3.6",
-    "fs-extra": "^8.1.0",
-    "inquirer": "^7.0.5",
-    "meow": "^6.0.1",
-    "mustache": "^4.0.0"
+    "fs-extra": "^9.0.0",
+    "inquirer": "^7.1.0",
+    "meow": "^6.1.0",
+    "mustache": "^4.0.1"
   }
 }
