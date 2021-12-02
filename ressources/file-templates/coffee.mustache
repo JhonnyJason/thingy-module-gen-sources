@@ -1,4 +1,4 @@
-{{moduleName}} = {name: "{{moduleName}}"}
+export name = "{{moduleName}}"
 ############################################################
 #region printLogFunctions
 log = (arg) ->
@@ -10,8 +10,8 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
-{{moduleName}}.initialize = () ->
+export initialize = ->
     log "{{moduleName}}.initialize"
+    #Implement or Remove :-)
     return
     
-module.exports = {{moduleName}}

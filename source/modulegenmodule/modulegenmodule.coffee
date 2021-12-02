@@ -27,7 +27,7 @@ class Task
     do: -> return
 
 class CoffeeGenTask extends Task
-    templatePath = pathModule.resolve( __dirname, "file-templates/template.coffee")
+    templatePath = pathModule.resolve( __dirname, "file-templates/coffee.mustache")
     do: ->
         log "do CoffeeGenTask for module " + @moduleName
         fileName = @moduleName + ".coffee"
@@ -41,7 +41,7 @@ class CoffeeGenTask extends Task
         await fs.writeFile(filePath, fileContent)
 
 class PugGenTask extends Task
-    templatePath = pathModule.resolve( __dirname, "file-templates/template.pug")
+    templatePath = pathModule.resolve( __dirname, "file-templates/pug.mustache")
     do: ->
         log "do PugGenTask for module " + @moduleName
         pugname = getPugName(@moduleName)
@@ -57,7 +57,7 @@ class PugGenTask extends Task
         await fs.writeFile(filePath, fileContent)
         
 class StyleGenTask extends Task
-    templatePath = pathModule.resolve( __dirname, "file-templates/template.styl")
+    templatePath = pathModule.resolve( __dirname, "file-templates/styl.mustache")
     do: ->
         log "do StyleGenTask for module " + @moduleName
         fileName = "styles.styl"
@@ -71,7 +71,7 @@ class StyleGenTask extends Task
 
         # log "\n - - - \nfileContent:\n" + fileContent
         await fs.writeFile(filePath, fileContent)
-
+    
 #endregion
 
 #region internal functions
@@ -87,6 +87,7 @@ generateModuleDirectory = ->
     dirPath = pathHandler.modulePath
     result = await fs.mkdirs(dirPath)
     log result
+    return
 
 generateTasks = (files, name) -> 
     log "generateTasks"
@@ -109,7 +110,8 @@ modulegenmodule.generate = (files, name) ->
     await generateModuleDirectory()    
     promises = (task.do() for task in tasks)
     await Promise.all(promises)
-    
+    return
+
 #endregion
 
 module.exports = modulegenmodule
