@@ -1,23 +1,15 @@
-cliargumentsmodule = {name: "cliargumentsmodule"}
-
-#region node_modules
-meow       = require('meow')
-#endregion
-
-#log Switch
-log = (arg) ->
-    if allModules.debugmodule.modulesToDebug["cliargumentsmodule"]?  then console.log "[cliargumentsmodule]: " + arg
-    return
-
-#region internal variables
+##############################################################################
+#region debug
+import {createLogFunctions} from "thingy-debug"
+{log, olog} = createLogFunctions("cliargumentsmodule")
 
 #endregion
 
-##initialization function  -> is automatically being called!  ONLY RELY ON DOM AND VARIABLES!! NO PLUGINS NO OHTER INITIALIZATIONS!!
-cliargumentsmodule.initialize = () ->
-    log "cliargumentsmodule.initialize"
-    return
+################################################################################
+import meow from 'meow'
 
+
+################################################################################
 #region internal functions
 getHelpText = ->
     log "getHelpText"
@@ -52,6 +44,7 @@ getOptions = ->
                 alias: "p"
     }
 
+################################################################################
 extractMeowed = (meowed) ->
     log "extractMeowed"
     name = ""
@@ -86,15 +79,11 @@ throwErrorOnUsageFail = (extract) ->
     
 #endregion
 
-#region exposed functions
-cliargumentsmodule.extractArguments = ->
-    log "cliargumentsmodule.extractArguments"
-    options = getOptions()
+################################################################################
+export extractArguments = ->
+    log "extractArguments"
     meowed = meow(getHelpText(), getOptions())
     extract = extractMeowed(meowed)
     throwErrorOnUsageFail(extract)
     return extract
 
-#endregion exposed functions
-
-module.exports = cliargumentsmodule

@@ -1,31 +1,28 @@
-pathhandlermodule = {name: "pathhandlermodule"}
+##############################################################################
+#region debug
+import {createLogFunctions} from "thingy-debug"
+{log, olog} = createLogFunctions("pathhandlermodule")
 
-#region node_modules
-c           = require('chalk');
-CLI         = require('clui');
-Spinner     = CLI.Spinner;
-fs          = require("fs-extra")
-pathModule  = require("path")
 #endregion
 
-#log Switch
-log = (arg) ->
-    if allModules.debugmodule.modulesToDebug["pathhandlermodule"]?  then console.log "[pathhandlermodule]: " + arg
-    return
 
-#region internal variables
+##############################################################################
+#region imports
+import c from 'chalk'
+import fs from "fs-extra"
+import pathModule  from "path"
+
 #endregion
 
-#region exposed variables
-pathhandlermodule.sourcePath = ""
-pathhandlermodule.modulePath = ""
-pathhandlermodule.thingyPath = ""
+##############################################################################
+#region variables
+sourcePath = ""
+modulePath = ""
+thingyPath = ""
+
 #endregion
 
-##initialization function  -> is automatically being called!  ONLY RELY ON DOM AND VARIABLES!! NO PLUGINS NO OHTER INITIALIZATIONS!!
-pathhandlermodule.initialize = () ->
-    log "pathhandlermodule.initialize"
-
+##############################################################################
 #region internal functions
 checkDirectoryExists = (path) ->
     try
@@ -36,23 +33,25 @@ checkDirectoryExists = (path) ->
         return false
 
 
+##############################################################################
 findSourcePath = ->
     log "findSourcePath"
 
-    sourcePath = pathModule.resolve(pathhandlermodule.thingyPath, "sources/source")
+    sourcePath = pathModule.resolve(thingyPath, "sources/source")
     exists = await checkDirectoryExists(sourcePath)
     if !exists
         throw new Error("sourcePath: " + sourcePath + " did not exist! The provided path might not be the thingy root.")
-    pathhandlermodule.sourcePath = sourcePath
+    sourcePath = sourcePath
 
 findModulePath = (name) ->
     log "findModulePath"
-    modulePath = pathModule.resolve(pathhandlermodule.sourcePath, name)
+    modulePath = pathModule.resolve(sourcePath, name)
     exists = await checkDirectoryExists(modulePath)
     if exists
         throw new Error("modulePath: " + modulePath + " did already exist! So the module already exists...")
-    pathhandlermodule.modulePath = modulePath
+    modulePath = modulePath
 
+##############################################################################
 checkProvidedPath = (providedPath) ->
     log "checkProvidedPath"
 
@@ -66,24 +65,24 @@ checkProvidedPath = (providedPath) ->
     if !exists
         throw new Error("Provided path:'" + providedPath + "' does not exist!")
     
-    pathhandlermodule.thingyPath = providedPath
+    thingyPath = providedPath
 
 #endregion
 
-#region exposed functions
-pathhandlermodule.checkPaths = (name, providedPath) ->
-    log "pathhandlermodule.checkPaths"
+##############################################################################
+#region exports
+export checkPaths = (name, providedPath) ->
+    log "checkPaths"
 
     log "checking for providedPath: " + providedPath
     await checkProvidedPath(providedPath)
-    log "resulting thingy path is: " + pathhandlermodule.thingyPath
+    log "resulting thingy path is: " + thingyPath
     
     await findSourcePath()
     await findModulePath(name)
 
-pathhandlermodule.getModulePath = -> pathhandlermodule.modulePath
+export getModulePath = -> modulePath
 
-pathhandlermodule.getSourcePath = -> pathhandlermodule.sourcePath
+export getSourcePath = -> sourcePath
+
 #endregion
-
-module.exports = pathhandlermodule

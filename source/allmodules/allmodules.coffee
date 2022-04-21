@@ -1,11 +1,23 @@
-Modules =
-    cliargumentsmodule: require "./cliargumentsmodule"
-    configmodule: require "./configmodule"
-    debugmodule: require "./debugmodule"
-    generateprocessmodule: require "./generateprocessmodule"
-    modulegenmodule: require "./modulegenmodule"
-    pathhandlermodule: require "./pathhandlermodule"
-    startupmodule: require "./startupmodule"
-    userinquirymodule: require "./userinquirymodule"
+import * as cliargumentsmodule from "./cliargumentsmodule.js"
+import * as configmodule from "./configmodule.js"
+import * as debugmodule from "./debugmodule.js"
+import * as generateprocessmodule from "./generateprocessmodule.js"
+import * as modulegenmodule from "./modulegenmodule.js"
+import * as pathhandlermodule from "./pathhandlermodule.js"
+import * as startupmodule from "./startupmodule.js"
+import * as userinquirymodule from "./userinquirymodule.js"
+import * as utilmodule from "./utilmodule.js"
 
-module.exports = Modules
+Modules = {
+    cliargumentsmodule,
+    configmodule,
+    debugmodule,
+    generateprocessmodule,
+    modulegenmodule,
+    pathhandlermodule,
+    startupmodule,
+    userinquirymodule,
+    utilmodule,
+}
+
+export default Modules

@@ -1,45 +1,37 @@
-startupmodule = {name: "startupmodule"}
+##############################################################################
+#region debug
+import {createLogFunctions} from "thingy-debug"
+{log, olog} = createLogFunctions("startupmodule")
 
-#region node_modules
-c       = require('chalk')
 #endregion
 
-#log Switch
-log = (arg) ->
-    if allModules.debugmodule.modulesToDebug["startupmodule"]?  then console.log "[startupmodule]: " + arg
-    return
+##############################################################################
+#region modulesFromEnvironment
+import c from 'chalk'
 
+##############################################################################
+import * as sp from "./syncprocessmodule.js"
+import * as ca from "./cliargumentsmodule.js"
+
+#endregion
+
+##############################################################################
 #region internal variables
 errLog = (arg) -> console.log(c.red(arg))
 successLog = (arg) -> console.log(c.green(arg))
 
-generateProcess = null
-cliArguments = null
 #endregion
 
-##initialization function  -> is automatically being called!  ONLY RELY ON DOM AND VARIABLES!! NO PLUGINS NO OHTER INITIALIZATIONS!!
-startupmodule.initialize = () ->
-    log "startupmodule.initialize"
-    generateProcess = allModules.generateprocessmodule
-    cliArguments = allModules.cliargumentsmodule
-
-#region internal functions
-#endregion
-
-#region exposed functions
-startupmodule.cliStartup = ->
-    log "startupmodule.cliStartup"
+##############################################################################
+export cliStartup = ->
+    log "cliStartup"
     try
-        e = cliArguments.extractArguments()
-        # console.log(chalk.yellow("caught arguments are: " + args._))
-        done = await generateProcess.execute(e.name, e.thingyPath)
+        e = ca.extractArguments()
+        done = await sp.execute(e.name, e.thingyPath)
         if done then successLog 'All done!'
+        else throw new Error("SyncProcess returned false!")
     catch err
         errLog 'Error!'
-        if err instanceof Error then console.log(err.message)
-        else console.log(err)
-        console.log("\n")
+        console.log err
+        console.log "\n"
 
-#endregion exposed functions
-
-module.exports = startupmodule

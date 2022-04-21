@@ -1,13 +1,13 @@
 # thingy-module-gen - commandline wizard to easify the generation of a thingy module
 
-# Why?
+# Background
 The process of copying and refactoring an existing module is too tedious. 
 Usually this tool is used from a a thingy toolset.
 While for more sophisticated usage the tool [thingymodulecreate](https://www.npmjs.com/package/thingymodulecreate) will be used. 
 
 The advantage of this tool is that it just instantly creates the directory and the files for the module in the most basic form.
 
-# How?
+# Usage
 Installation
 ------------
 
@@ -20,8 +20,7 @@ Npm Registry
 $ npm install thingy-module-gen
 ```
 
-
-Usage
+CLI
 -----
 
 ``` sh

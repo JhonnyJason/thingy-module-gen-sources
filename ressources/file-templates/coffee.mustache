@@ -1,17 +1,12 @@
-export name = "{{moduleName}}"
 ############################################################
-#region printLogFunctions
-log = (arg) ->
-    if allModules.debugmodule.modulesToDebug["{{moduleName}}"]?  then console.log "[{{moduleName}}]: " + arg
-    return
-ostr = (obj) -> JSON.stringify(obj, null, 4)
-olog = (obj) -> log "\n" + ostr(obj)
-print = (arg) -> console.log(arg)
+#region debug
+import { createLogFunctions } from "thingy-debug"
+{log, olog} = createLogFunctions("{{moduleName}}")
 #endregion
 
 ############################################################
 export initialize = ->
-    log "{{moduleName}}.initialize"
+    log "initialize"
     #Implement or Remove :-)
     return
     

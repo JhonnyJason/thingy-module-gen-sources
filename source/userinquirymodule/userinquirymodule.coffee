@@ -1,27 +1,14 @@
-userinquirymodule = {name: "userinquirymodule"}
+##############################################################################
+#region debug
+import {createLogFunctions} from "thingy-debug"
+{log, olog} = createLogFunctions("userinquirymodule")
 
-#region node_modules
-inquirer = require("inquirer")
 #endregion
 
+##############################################################################
+import inquirer from "inquirer"
 
-#log Switch
-log = (arg) ->
-    if allModules.debugmodule.modulesToDebug["userinquirymodule"]?  then console.log "[userinquirymodule]: " + arg
-    return
-
-#region internal variables
-#endregion
-
-#region exposed variables
-#endregion
-
-
-##initialization function  -> is automatically being called!  ONLY RELY ON DOM AND VARIABLES!! NO PLUGINS NO OHTER INITIALIZATIONS!!
-userinquirymodule.initialize = () ->
-    log "userinquirymodule.initialize"
-    return
-
+##############################################################################
 #region internal functions
 generateFileOptions = () ->
     options = [
@@ -39,6 +26,7 @@ generateFileOptions = () ->
     ]    
     return options
 
+##############################################################################
 createQuestion = (options) -> 
     return [
         {
@@ -50,12 +38,9 @@ createQuestion = (options) ->
     ]
 #endregion
 
-#region exposed functions
-userinquirymodule.doInquiry =  ->
+##############################################################################
+export doInquiry =  ->
     options = generateFileOptions()
     question = createQuestion(options)
     answer = await inquirer.prompt(question)
     return answer.filesToGenerate
-#endregion
-
-module.exports = userinquirymodule

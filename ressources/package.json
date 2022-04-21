@@ -1,6 +1,6 @@
 {
     "name": "thingy-module-gen",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Small cli to reduce overhead of createing a new thingy-module",
     "main": "index.js",
     "scripts": {
@@ -13,16 +13,17 @@
         "generate",
         "module"
     ],
-    "author": "Lenard Frommelt lenard.frommelt@gne.or.at",
+    "author": "Lenard Frommelt lenard@frommelt.dev",
     "license": "Unlicense",
     "bin": {
         "thingy-module-gen": "./index.js"
     },
     "dependencies": {
         "clui": "^0.3.6",
-        "fs-extra": "^9.0.0",
-        "inquirer": "^7.1.0",
-        "meow": "^6.1.0",
-        "mustache": "^4.0.1"
-    }
+        "fs-extra": "^10.1.0",
+        "inquirer": "^8.2.2",
+        "meow": "^10.1.2",
+        "mustache": "^4.2.0"
+    },
+    "typoe": "module"
 }

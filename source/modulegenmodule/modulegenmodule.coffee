@@ -1,33 +1,32 @@
-modulegenmodule = {name: "modulegenmodule"}
+##############################################################################
+#region debug
+import {createLogFunctions} from "thingy-debug"
+{log, olog} = createLogFunctions("modulegenmodule")
 
-#region node_modules
-fs = require "fs-extra"
-mustache = require "mustache"
-pathModule = require "path"
 #endregion
 
-#log Switch
-log = (arg) ->
-    if allModules.debugmodule.modulesToDebug["modulegenmodule"]?  then console.log "[modulegenmodule]: " + arg
-    return
 
-#region internal variables
-pathHandler = null
+##############################################################################
+#region imports
+import fs from "fs-extra"
+import M from "mustache"
+import pathModule from "path"
+
+##############################################################################
+import * as pathHandler from "./pathhandlermodule.js"
+
 #endregion
 
-##initialization function  -> is automatically being called!  ONLY RELY ON DOM AND VARIABLES!! NO PLUGINS NO OHTER INITIALIZATIONS!!
-modulegenmodule.initialize = () ->
-    log "modulegenmodule.initialize"
-    pathHandler = allModules.pathhandlermodule
-    return
 
+
+##############################################################################
 #region classes
 class Task
     constructor: (@moduleName) -> return
     do: -> return
 
 class CoffeeGenTask extends Task
-    templatePath = pathModule.resolve( __dirname, "file-templates/coffee.mustache")
+    templatePath = pathModule.resolve( __dirname, "file-templates/coffee.M")
     do: ->
         log "do CoffeeGenTask for module " + @moduleName
         fileName = @moduleName + ".coffee"
@@ -35,13 +34,13 @@ class CoffeeGenTask extends Task
         # log "filePath: " + filePath
 
         template = await fs.readFile(templatePath, "utf-8")        
-        fileContent = mustache.render(template, {moduleName: @moduleName})
+        fileContent = M.render(template, {moduleName: @moduleName})
         
         # log "\n - - - \nfileContent:\n" + fileContent
         await fs.writeFile(filePath, fileContent)
 
 class PugGenTask extends Task
-    templatePath = pathModule.resolve( __dirname, "file-templates/pug.mustache")
+    templatePath = pathModule.resolve( __dirname, "file-templates/pug.M")
     do: ->
         log "do PugGenTask for module " + @moduleName
         pugname = getPugName(@moduleName)
@@ -51,13 +50,13 @@ class PugGenTask extends Task
         # log "filePath: " + filePath
 
         template = await fs.readFile(templatePath, "utf-8")
-        fileContent = mustache.render(template, {moduleName: pugname})
+        fileContent = M.render(template, {moduleName: pugname})
 
         # log "\n - - - \nfileContent:\n" + fileContent
         await fs.writeFile(filePath, fileContent)
         
 class StyleGenTask extends Task
-    templatePath = pathModule.resolve( __dirname, "file-templates/styl.mustache")
+    templatePath = pathModule.resolve( __dirname, "file-templates/styl.M")
     do: ->
         log "do StyleGenTask for module " + @moduleName
         fileName = "styles.styl"
@@ -67,13 +66,14 @@ class StyleGenTask extends Task
         # log "filePath: " + filePath
 
         template = await fs.readFile(templatePath, "utf-8")        
-        fileContent = mustache.render(template, {moduleName: pugname})
+        fileContent = M.render(template, {moduleName: pugname})
 
         # log "\n - - - \nfileContent:\n" + fileContent
         await fs.writeFile(filePath, fileContent)
     
 #endregion
 
+##############################################################################
 #region internal functions
 getPugName = (name) ->
     log "getPugName"
@@ -102,9 +102,9 @@ generateTasks = (files, name) ->
 
 #endregion
 
-#region exposed functions
-modulegenmodule.generate = (files, name) ->
-    log "modulegenmodule.generate"
+##############################################################################
+export generate = (files, name) ->
+    log "generate"
     tasks = generateTasks(files, name)
 
     await generateModuleDirectory()    
@@ -112,6 +112,3 @@ modulegenmodule.generate = (files, name) ->
     await Promise.all(promises)
     return
 
-#endregion
-
-module.exports = modulegenmodule
