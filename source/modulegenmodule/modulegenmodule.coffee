@@ -13,7 +13,7 @@ import M from "mustache"
 import pathModule from "path"
 
 ##############################################################################
-import * as pathHandler from "./pathhandlermodule.js"
+import * as ph from "./pathhandlermodule.js"
 
 #endregion
 
@@ -26,47 +26,65 @@ class Task
     do: -> return
 
 class CoffeeGenTask extends Task
-    templatePath = pathModule.resolve( __dirname, "file-templates/coffee.M")
+    template: """
+        ############################################################
+        #region debug
+        import { createLogFunctions } from "thingy-debug"
+        {log, olog} = createLogFunctions("{{moduleName}}")
+        #endregion
+
+        ############################################################
+        export initialize = ->
+            log "initialize"
+            #Implement or Remove :-)
+            return
+        """
     do: ->
         log "do CoffeeGenTask for module " + @moduleName
         fileName = @moduleName + ".coffee"
-        filePath = pathModule.resolve(pathHandler.modulePath,  fileName)
+        filePath = pathModule.resolve(ph.getModulePath(),  fileName)
         # log "filePath: " + filePath
 
-        template = await fs.readFile(templatePath, "utf-8")        
-        fileContent = M.render(template, {moduleName: @moduleName})
+        fileContent = M.render(@template, {moduleName: @moduleName})
         
         # log "\n - - - \nfileContent:\n" + fileContent
         await fs.writeFile(filePath, fileContent)
 
 class PugGenTask extends Task
-    templatePath = pathModule.resolve( __dirname, "file-templates/pug.M")
+    template: """
+        //- {{moduleName}} structure
+        \#{{moduleName}}
+        """
     do: ->
         log "do PugGenTask for module " + @moduleName
         pugname = getPugName(@moduleName)
         # log "pugname: " + pugname
         fileName = pugname + ".pug"
-        filePath = pathModule.resolve(pathHandler.modulePath,  fileName)
+        filePath = pathModule.resolve(ph.getModulePath(),  fileName)
         # log "filePath: " + filePath
 
-        template = await fs.readFile(templatePath, "utf-8")
-        fileContent = M.render(template, {moduleName: pugname})
+        fileContent = M.render(@template, {moduleName: pugname})
 
         # log "\n - - - \nfileContent:\n" + fileContent
         await fs.writeFile(filePath, fileContent)
         
 class StyleGenTask extends Task
-    templatePath = pathModule.resolve( __dirname, "file-templates/styl.M")
+    template: """
+        // {{moduleName}} styles
+        \#{{moduleName}}
+            width 100%
+            min-height 20px
+            background-color rgba(0, 0, 0, 0.2)
+        """
     do: ->
         log "do StyleGenTask for module " + @moduleName
         fileName = "styles.styl"
         pugname = getPugName(@moduleName)
         # log "pugname: " + pugname
-        filePath = pathModule.resolve(pathHandler.modulePath,  fileName)
+        filePath = pathModule.resolve(ph.getModulePath(),  fileName)
         # log "filePath: " + filePath
 
-        template = await fs.readFile(templatePath, "utf-8")        
-        fileContent = M.render(template, {moduleName: pugname})
+        fileContent = M.render(@template, {moduleName: pugname})
 
         # log "\n - - - \nfileContent:\n" + fileContent
         await fs.writeFile(filePath, fileContent)
@@ -84,7 +102,7 @@ getPugName = (name) ->
 
 generateModuleDirectory = ->
     log "generateModuleDirectory"
-    dirPath = pathHandler.modulePath
+    dirPath = ph.getModulePath()
     result = await fs.mkdirs(dirPath)
     log result
     return

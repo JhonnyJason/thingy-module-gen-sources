@@ -19,11 +19,10 @@
         "thingy-module-gen": "./index.js"
     },
     "dependencies": {
-        "clui": "^0.3.6",
         "fs-extra": "^10.1.0",
         "inquirer": "^8.2.2",
         "meow": "^10.1.2",
         "mustache": "^4.2.0"
     },
-    "typoe": "module"
+    "type": "module"
 }

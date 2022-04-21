@@ -48,7 +48,7 @@ findModulePath = (name) ->
     modulePath = pathModule.resolve(sourcePath, name)
     exists = await checkDirectoryExists(modulePath)
     if exists
-        throw new Error("modulePath: " + modulePath + " did already exist! So the module already exists...")
+        throw new Error("modulePath: " + modulePath + " did already exist!")
     modulePath = modulePath
 
 ##############################################################################

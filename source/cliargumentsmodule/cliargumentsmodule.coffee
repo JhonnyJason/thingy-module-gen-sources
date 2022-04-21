@@ -32,9 +32,11 @@ getHelpText = ->
             $ thingy-module-gen  new-super-module 
             ...
     """
+
 getOptions = ->
     log "getOptions"
     return {
+        importMeta: import.meta,
         flags:
             name:
                 type: "string"
